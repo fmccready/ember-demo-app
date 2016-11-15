@@ -12,9 +12,12 @@ export default Ember.Component.extend({
   actions: {
     handleFilterEntry() {
       let filterInputValue = this.get('value');
-      let filterAction = this.get('filter');
-      filterAction(filterInputValue).then((filterResults) => this.set('results', filterResults));
-    }
+      Ember.run.debounce(this, filter, filterInputValue, 1000);
+    },
   }
 
 });
+function filter(filterInputValue){
+  let filterAction = this.get('filter');
+  filterAction(filterInputValue).then((filterResults) => this.set('results', filterResults));
+}
